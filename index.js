@@ -4,7 +4,8 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const fs = require('fs');
 const accounts = require('./js/config');
-const csv = require('csvtojson')
+const csv = require('csvtojson');
+const path = require('path');
 const json2csv = require('json2csv').Parser;
 const fields = ['date', 'accountName', 'totalFollowers', 'totalFollowing'];
 const PORT = process.env.PORT || 5000;
@@ -18,9 +19,9 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-http.listen(5000, function(){
-    console.log('listening on *:5000');
-  });  
+http.listen(`${PORT}`, function(){
+    console.log(`listening on ${PORT}`);
+});
 
 io.on('connection', function(socket){
 
