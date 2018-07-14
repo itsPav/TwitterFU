@@ -7,7 +7,7 @@ const accounts = require('./js/config');
 const csv = require('csvtojson')
 const json2csv = require('json2csv').Parser;
 const fields = ['date', 'accountName', 'totalFollowers', 'totalFollowing'];
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000;
 
 var minutes = 120;
 var the_interval = minutes * 60 * 1000;
@@ -18,8 +18,8 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-http.listen(3000, function(){
-    console.log('listening on *:3000');
+http.listen(5000, function(){
+    console.log('listening on *:5000');
   });  
 
 io.on('connection', function(socket){
