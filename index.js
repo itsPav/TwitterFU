@@ -19,8 +19,8 @@ app.get('/', function(req, res){
 });
 
 http.listen(3000, function(){
-    console.log(`Listening on ${ PORT }`)
-});  
+    console.log('listening on *:3000');
+  });  
 
 io.on('connection', function(socket){
 
