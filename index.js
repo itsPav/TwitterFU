@@ -45,10 +45,18 @@ io.on('connection', function(socket){
             }
         });
     })
-  });  
+});  
+
+followUnfollow();
+
+setInterval(followUnfollow, the_interval);
 
 setInterval(function() {
-    console.log("I am doing my 1 minute task");
+    http.get("http://protected-brushlands-74783.herokuapp.com");
+}, 300000); // every 5 minutes (300000)
+
+function followUnfollow() {
+    console.log("I am doing my 120 minute task");
     
     var accountData;
     var myData = {};
@@ -132,4 +140,4 @@ setInterval(function() {
     
         });
     });
-  }, the_interval);
+}
