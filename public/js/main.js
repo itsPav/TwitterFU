@@ -61,6 +61,7 @@ socket.on('minutes', function(minutes){
   document.getElementById('minutes').innerHTML = `Interval: ${minutes} minutes`;
 });
 
+// Change the Twitter Config
 var followConfig = document.getElementById('followConfig');
 var unfollowConfig = document.getElementById('unfollowConfig');
 var minuteConfig = document.getElementById('minuteConfig');
@@ -79,3 +80,21 @@ minuteConfig.addEventListener("click", function() {
   socket.emit('minutes', document.getElementsByClassName('minutes')[0].value);
   return false;
 })
+
+// Add account
+var addAccount = document.getElementById('newAccount');
+
+addAccount.addEventListener("click", function() {
+  socket.emit('twitterAccount', getTwitterData());
+  return false;
+})
+
+function getTwitterData() {
+  twitterData = [];
+  twitterData.push(`"${document.getElementsByClassName('consumer_key')[0].value}"`)
+  twitterData.push(`"${document.getElementsByClassName('consumer_secret')[0].value}"`)
+  twitterData.push(`"${document.getElementsByClassName('access_token')[0].value}"`)
+  twitterData.push(`"${document.getElementsByClassName('access_token_secret')[0].value}"`)
+  console.log(twitterData);
+  return twitterData;
+}
