@@ -48,3 +48,34 @@ var socket = io();
 socket.on('csvData', function(csvData){
   render(csvData);
 });
+
+socket.on('followNum', function(followNum){
+  document.getElementById('followNum').innerHTML = `Number of People to Follow: ${followNum}`;
+});
+
+socket.on('unfollowNum', function(unfollowNum){
+  document.getElementById('unfollowNum').innerHTML = `Number of People to Unfollow: ${unfollowNum}`;
+});
+
+socket.on('minutes', function(minutes){
+  document.getElementById('minutes').innerHTML = `Interval: ${minutes} minutes`;
+});
+
+var followConfig = document.getElementById('followConfig');
+var unfollowConfig = document.getElementById('unfollowConfig');
+var minuteConfig = document.getElementById('minuteConfig');
+
+followConfig.addEventListener("click", function() {
+  socket.emit('followNum', document.getElementsByClassName('followNum')[0].value);
+  return false;
+})
+
+unfollowConfig.addEventListener("click", function() {
+  socket.emit('unfollowNum', document.getElementsByClassName('unfollowNum')[0].value);
+  return false;
+})
+
+minuteConfig.addEventListener("click", function() {
+  socket.emit('minutes', document.getElementsByClassName('minutes')[0].value);
+  return false;
+})

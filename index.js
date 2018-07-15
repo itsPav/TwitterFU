@@ -10,8 +10,10 @@ const json2csv = require('json2csv').Parser;
 const fields = ['date', 'accountName', 'totalFollowers', 'totalFollowing'];
 const PORT = process.env.PORT || 5000;
 
-var minutes = 120;
+var minutes = 60;
 var the_interval = minutes * 60 * 1000;
+var followNum = 5;
+var unfollowNum = 4;
 
 app.use(express.static('public'))
 
@@ -27,6 +29,12 @@ io.on('connection', function(socket){
 
     var csvData = [];
     var csvFiles = 0;
+
+    // on connection send out the twitter follower Count
+    // and the accounts that are active
+    io.emit('followNum', followNum);
+    io.emit('unfollowNum', unfollowNum);
+    io.emit('minutes', minutes);
 
     fs.readdir('./', (err, files) => {
         files.forEach(file => {
@@ -45,15 +53,34 @@ io.on('connection', function(socket){
             }
         });
     })
+
+    socket.on('followNum', function(newfollowNum){
+        followNum = newfollowNum;
+        console.log(followNum);
+    });
+
+    socket.on('unfollowNum', function(newunfollowNum){
+        unfollowNum = newunfollowNum;
+        console.log(unfollowNum);
+    });
+
+    socket.on('minutes', function(newMinutes){
+        minutes = newMinutes;
+        console.log(minutes);
+    });
+
 });  
 
+// resetSleep();
 followUnfollow();
 
 setInterval(followUnfollow, the_interval);
+setInterval(resetSleep, 300000); // every 5 minutes (300000)
 
-setInterval(function() {
-    http.get("http://protected-brushlands-74783.herokuapp.com");
-}, 300000); // every 5 minutes (300000)
+function resetSleep() {
+    app.get("http://protected-brushlands-74783.herokuapp.com");
+    // console.log('Reset');
+}
 
 function followUnfollow() {
     console.log("I am doing my 120 minute task");
@@ -78,9 +105,9 @@ function followUnfollow() {
     
                 var toUnfollow = [];
                 (data.ids).forEach(element => {
-                if(toUnfollow.length < 20 && element != "") {
-                    toUnfollow.push(element);
-                }
+                    if(toUnfollow.length < unfollowNum && element != "") {
+                        toUnfollow.push(element);
+                    }
                 });
     
                 // Unfollow
@@ -97,20 +124,22 @@ function followUnfollow() {
             var stream = twitAccount.stream('statuses/sample')
             // get real time sample tweet ids
             stream.on('tweet', function (tweet) {
-            // Follow
-            // https://developer.twitter.com/en/docs/accounts-and-users/follow-search-get-users/api-reference/post-friendships-create.html
-            if(followCount<20) {
-                twitAccount.post('friendships/create', { user_id: tweet.user.id }, function (err, data, response) {
-                console.log('Followed: ' + tweet.user.id);
-                followCount++;
-                });
-            }
-            else {
-                stream.stop();
-                console.log('Done following');
-            }
-            });
-    
+                console.log(tweet.user.id);
+                // Follow
+                // https://developer.twitter.com/en/docs/accounts-and-users/follow-search-get-users/api-reference/post-friendships-create.html
+                if(followCount<followNum) {
+                    twitAccount.post('friendships/create', { user_id: tweet.user.id }, function (err, data, response) {
+                    console.log('Followed: ' + tweet.user.id);
+                    });
+                    console.log(followCount);
+                    followCount++;
+                }
+                else {
+                    stream.stop();
+                    console.log('Done following');
+                }
+            })
+        
             var actualDate = new Date();
             myData.date = `${actualDate.toLocaleDateString("en-US")} ${actualDate.getHours()}`;
             myData.accountName = accountData.screen_name;

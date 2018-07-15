@@ -11,8 +11,20 @@
 <body>
 
     <div>
-        
+        <h1>Twitter Follower Config</h1>
+        <form>
+            <label id="followNum">Number of People to Follow: </label><br>
+            <input class="followNum" type="number" placeholder="People to Follow">
+            <button id="followConfig">Change</button><br>
+            <label id="unfollowNum">Number of People to Unfollow</label><br>
+            <input class="unfollowNum" type="number" placeholder="People to unfollow">
+            <button id="unfollowConfig">Change</button><br>
+            <label id="minutes">Interval</label><br>
+            <input class="minutes" type="number" placeholder="Interval in minutes">
+            <button id="minuteConfig">Change</button>
+        </form>
     </div>
+
     <canvas id="line-chart" width="600" height="450"></canvas>
 
     <script src="/socket.io/socket.io.js"></script>
