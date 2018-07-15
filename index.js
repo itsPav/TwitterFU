@@ -93,11 +93,6 @@ function getAccounts() {
 }
 
 setInterval(followUnfollow, the_interval);
-setInterval(resetSleep, 300000); // every 5 minutes (300000)
-
-function resetSleep() {
-    app.get("http://protected-brushlands-74783.herokuapp.com");
-}
 
 function followUnfollow() {
     console.log(accounts);
