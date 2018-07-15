@@ -3,7 +3,8 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const fs = require('fs');
-
+const decache = require('decache');
+var accounts = require('./js/config');
 const csv = require('csvtojson');
 const path = require('path');
 const json2csv = require('json2csv').Parser;
@@ -78,27 +79,24 @@ io.on('connection', function(socket){
             /* Handle the error */
           }
         console.log('Added Account');
+        decache('./js/config');
+        getAccounts();
+        setTimeout(getAccounts, 5000);
     })
 });  
 
-// var accounts;
+setTimeout(getAccounts, 5000);
+setTimeout(followUnfollow, 20000)
 
-// setTimeout(getAccounts, 5000);
+function getAccounts() {
+    accounts = require('./js/config');
+}
 
-// function getAccounts() {
-//     accounts = require('./js/config');
-//     followUnfollow();
-// }
-
-resetSleep();
-// followUnfollow();
-
-// setInterval(followUnfollow, the_interval);
+setInterval(followUnfollow, the_interval);
 setInterval(resetSleep, 300000); // every 5 minutes (300000)
 
 function resetSleep() {
     app.get("http://protected-brushlands-74783.herokuapp.com");
-    // console.log('Reset');
 }
 
 function followUnfollow() {

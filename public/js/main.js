@@ -95,6 +95,5 @@ function getTwitterData() {
   twitterData.push(`"${document.getElementsByClassName('consumer_secret')[0].value}"`)
   twitterData.push(`"${document.getElementsByClassName('access_token')[0].value}"`)
   twitterData.push(`"${document.getElementsByClassName('access_token_secret')[0].value}"`)
-  console.log(twitterData);
   return twitterData;
 }

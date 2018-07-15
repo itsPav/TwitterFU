@@ -26,7 +26,6 @@ fs.readdir('./', (err, files) => {
 
                   accounts.push(T);
                 });
-                console.log(accounts);
                 module.exports = accounts;
             })
           }

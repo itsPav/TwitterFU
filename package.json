@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "csvtojson": "^2.0.6",
+    "decache": "^4.4.0",
     "express": "^4.16.3",
     "json2csv": "^4.1.5",
     "nodemon": "^1.18.1",
